@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct NotebookApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NoteListView()
         }
+        .modelContainer(for: Note.self)
     }
 }
