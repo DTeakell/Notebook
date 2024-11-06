@@ -14,7 +14,7 @@ struct NoteListView: View {
     @Query var notes: [Note]
     
     var body: some View {
-        NavigationStack {
+        NavigationSplitView {
             if notes.isEmpty {
                 NoNotesView()
                     .navigationTitle("Notebook")
@@ -23,6 +23,7 @@ struct NoteListView: View {
                     isShowingNoteDetailView.toggle()
                 } label: {
                     Label("Add Note", systemImage: "plus")
+                        .fontWeight(.medium)
                 }
                 .sheet(isPresented: $isShowingNoteDetailView) {
                     NoteDetailView(note: Note(title: "", body: "", date: Date()))
@@ -64,6 +65,8 @@ struct NoteListView: View {
                 }
                 .navigationTitle("Notebook")
             }
+        } detail: {
+            NoNoteSelectedView()
         }
         .tint(.purple)
     }

@@ -12,26 +12,32 @@ struct NoteDetailView: View {
     @Environment(\.modelContext) var context
     @State var note: Note
     var body: some View {
-        
         NavigationStack {
             VStack {
                 TextField("Note Title", text: $note.title)
                     .font(.title)
-                    .fontWeight(.semibold)
+                    .fontWeight(.bold)
                 
                 TextEditor(text: $note.body)
                     .font(.body)
             }
             .toolbar {
+                
+                ToolbarItem (placement: .cancellationAction) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Save") {
                         context.insert(note)
                         dismiss()
                     }
+                    .disabled(note.title.isEmpty)
                 }
             }
-            .navigationTitle("New Note")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarBackButtonHidden()
             .padding()
         }
     }
