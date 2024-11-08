@@ -22,5 +22,4 @@ class Note: Identifiable {
         self.body = body
         self.date = date
     }
-    
 }

@@ -14,6 +14,7 @@ struct NotebookApp: App {
         WindowGroup {
             NoteListView()
         }
+        // Injects the SwiftData model to the root of the app
         .modelContainer(for: Note.self)
     }
 }

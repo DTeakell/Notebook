@@ -9,12 +9,20 @@ import SwiftUI
 import SwiftData
 
 struct NoteListView: View {
+    
+    // Property to control the sheet visibility
     @State private var isShowingNoteDetailView: Bool = false
+    
+    // Injects the model into the view from the root
     @Environment(\.modelContext) var context
+    
+    // Reads the list
     @Query var notes: [Note]
     
     var body: some View {
         NavigationSplitView {
+            
+            // View if list is empty
             if notes.isEmpty {
                 NoNotesView()
                     .navigationTitle("Notebook")
@@ -31,15 +39,20 @@ struct NoteListView: View {
                 .buttonStyle(.borderedProminent)
                 .padding()
                 
-            } else {
+            }
+            
+            // View for if list is not empty
+            else {
                 List(notes) { note in
                     NavigationLink (destination: NoteDetailView(note: note)) {
                         NoteSummaryView(note: note)
                     }
+                    
+                    // Action to remove note
                     .swipeActions {
                         Button(role: .destructive) {
                             withAnimation {
-                                context.delete(note)
+                                removeNote(note)
                             }
                         } label: {
                             Label("Remove Note", systemImage: "trash")
@@ -47,10 +60,13 @@ struct NoteListView: View {
                         }
                     }
                 }
+                
+                // Sheet that shows the note detail view
                 .sheet(isPresented: $isShowingNoteDetailView) {
                     NoteDetailView(note: Note(title: "", body: "", date: Date()))
                 }
                 
+                // Button to add new note
                 .toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         Button {
@@ -65,10 +81,18 @@ struct NoteListView: View {
                 }
                 .navigationTitle("Notebook")
             }
+            
+            // For iPad: Shows no notes if no note is selected or list is empty
         } detail: {
             NoNoteSelectedView()
         }
+        
         .tint(.purple)
+    }
+    
+    // Function to remove note
+    private func removeNote(_ note: Note) {
+        context.delete(note)
     }
 }
 
