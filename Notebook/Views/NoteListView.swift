@@ -19,8 +19,19 @@ struct NoteListView: View {
     // Reads the list
     @Query var notes: [Note]
     
+    var filteredNotes: [Note] {
+        if searchText.isEmpty {
+            return notes
+        } else {
+            return notes.filter {($0.title.contains(searchText)) || ($0.body.contains(searchText))
+            }
+        }
+    }
+    
+    @State var searchText: String = ""
+    
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
             
             // View if list is empty
             if notes.isEmpty {
@@ -43,7 +54,7 @@ struct NoteListView: View {
             
             // View for if list is not empty
             else {
-                List(notes) { note in
+                List(filteredNotes) { note in
                     NavigationLink (destination: NoteDetailView(note: note)) {
                         NoteSummaryView(note: note)
                     }
@@ -60,8 +71,14 @@ struct NoteListView: View {
                         }
                     }
                 }
+                .searchable(text: $searchText)
+                .overlay {
+                    if filteredNotes.isEmpty {
+                        ContentUnavailableView.search
+                    }
+                }
                 
-                // Sheet that shows the note detail view
+                // Sheet that shows note editor for new note
                 .sheet(isPresented: $isShowingNoteDetailView) {
                     NoteDetailView(note: Note(title: "", body: "", date: Date()))
                 }
@@ -81,13 +98,7 @@ struct NoteListView: View {
                 }
                 .navigationTitle("Notebook")
             }
-            
-            // For iPad: Shows no notes if no note is selected or list is empty
-        } detail: {
-            NoNoteSelectedView()
         }
-        
-        .tint(.purple)
     }
     
     // Function to remove note
