@@ -9,3 +9,5 @@ This is a simple note-taking app that allows you to create, modify, and remove n
 - Sheets
 - @Environment and @Query Property Wrappers
 - Model Containers and Model Contexts
+- SwiftUI ContentUnavailableView
+- Searchable
