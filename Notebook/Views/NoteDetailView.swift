@@ -18,12 +18,12 @@ struct NoteDetailView: View {
     @State var note: Note
     var body: some View {
         NavigationStack {
-            
             // Note title and body fields
             VStack {
                 TextField("Note Title", text: $note.title)
                     .font(.title)
                     .fontWeight(.bold)
+                    .textFieldStyle(.plain)
                 
                 TextEditor(text: $note.body)
                     .font(.body)
@@ -46,6 +46,8 @@ struct NoteDetailView: View {
                     .disabled(note.title.isEmpty)
                 }
             }
+            .navigationTitle(note.title)
+            .navigationBarTitleDisplayMode(.inline)
             
             // Hides the back button to make room for the cancel button
             .navigationBarBackButtonHidden()
