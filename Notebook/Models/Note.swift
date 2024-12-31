@@ -17,6 +17,10 @@ class Note: Identifiable {
     var date: Date
     
     
+    @Relationship(inverse: \Folder.notes) // This tells SwiftData the relationship between Folder and Notes
+    var folder: Folder? = nil
+    
+    
     init(title: String, body: String, date: Date) {
         self.title = title
         self.body = body

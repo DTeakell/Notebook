@@ -14,7 +14,7 @@ struct NoNotesView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 40, height: 40)
-                    .foregroundStyle(.purple)
+                    .foregroundStyle(.mint)
                 
                 Text("No Notes")
                     .font(.headline)

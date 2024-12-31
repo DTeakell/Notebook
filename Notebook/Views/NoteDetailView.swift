@@ -16,6 +16,7 @@ struct NoteDetailView: View {
     @Environment(\.modelContext) var context
     
     @State var note: Note
+    
     var body: some View {
         NavigationStack {
             // Note title and body fields
@@ -53,6 +54,7 @@ struct NoteDetailView: View {
             .navigationBarBackButtonHidden()
             .padding()
         }
+        .tint(.mint)
     }
     
     // Function to add note

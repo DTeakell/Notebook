@@ -12,12 +12,15 @@ struct NoteListView: View {
     
     // Property to control the sheet visibility
     @State private var isShowingNoteDetailView: Bool = false
+    @State var searchText: String = ""
+    @State private var isShowingCreateFolderView: Bool = false
     
     // Injects the model into the view from the root
     @Environment(\.modelContext) var context
     
     // Reads the list
     @Query var notes: [Note]
+    @Query var folders: [Folder]
     
     var filteredNotes: [Note] {
         if searchText.isEmpty {
@@ -28,12 +31,10 @@ struct NoteListView: View {
         }
     }
     
-    @State var searchText: String = ""
-    
     var body: some View {
         NavigationStack {
             
-            // View if list is empty
+            // View if notes list is empty
             if notes.isEmpty {
                 NoNotesView()
                     .navigationTitle("Notebook")
@@ -43,6 +44,7 @@ struct NoteListView: View {
                 } label: {
                     Label("Add Note", systemImage: "plus")
                         .fontWeight(.medium)
+                        .foregroundStyle(.background)
                 }
                 .sheet(isPresented: $isShowingNoteDetailView) {
                     NoteDetailView(note: Note(title: "", body: "", date: Date()))
@@ -54,20 +56,43 @@ struct NoteListView: View {
             
             // View for if list is not empty
             else {
-                List(filteredNotes) { note in
-                    NavigationLink (destination: NoteDetailView(note: note)) {
-                        NoteSummaryView(note: note)
+                List {
+                    // Folders section
+                    Section("Folders") {
+                        ForEach(folders) { folder in
+                            NavigationLink(destination: FolderSummaryView(folder: folder)) {
+                                FolderSummaryView(folder: folder)
+                            }
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        removeFolder(folder)
+                                    }
+                                } label: {
+                                    Label("Remove Note", systemImage: "trash")
+                                        .tint(.red)
+                                }
+                            }
+                        }
                     }
                     
-                    // Action to remove note
-                    .swipeActions {
-                        Button(role: .destructive) {
-                            withAnimation {
-                                removeNote(note)
+                    // Notes section
+                    Section("All Notes") {
+                        ForEach(filteredNotes) { note in
+                            NavigationLink(destination: NoteDetailView(note: note)) {
+                                NoteSummaryView(note: note)
                             }
-                        } label: {
-                            Label("Remove Note", systemImage: "trash")
-                                .tint(.red)
+                            // Action to remove note
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        removeNote(note)
+                                    }
+                                } label: {
+                                    Label("Remove Note", systemImage: "trash")
+                                        .tint(.red)
+                                }
+                            }
                         }
                     }
                 }
@@ -77,33 +102,43 @@ struct NoteListView: View {
                         ContentUnavailableView.search
                     }
                 }
-                
-                // Sheet that shows note editor for new note
-                .sheet(isPresented: $isShowingNoteDetailView) {
-                    NoteDetailView(note: Note(title: "", body: "", date: Date()))
-                }
-                
                 // Button to add new note
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button {
-                            isShowingNoteDetailView.toggle()
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Menu {
+                            Button { isShowingNoteDetailView = true } label: {
+                                Label("New Note", systemImage: "note.text.badge.plus")
+                            }
                             
+                            Button { isShowingCreateFolderView = true } label: {
+                                Label(
+                                    "New Folder",
+                                    systemImage: "folder.badge.plus"
+                                )
+                            }
                         } label: {
-                            Label("New Note", systemImage: "plus")
+                            Label("Menu", systemImage: "plus")
                         }
-                        .buttonStyle(.borderedProminent)
-                        .clipShape(Circle())
                     }
                 }
                 .navigationTitle("Notebook")
+                .sheet(isPresented: $isShowingNoteDetailView) {
+                    NoteDetailView(note: Note(title: "", body: "", date: Date()))
+                }
+                .sheet(isPresented: $isShowingCreateFolderView) {
+                    CreateFolderView(folder: Folder(name: "", notes: []))
+                }
             }
         }
+        .tint(.mint)
     }
-    
     // Function to remove note
     private func removeNote(_ note: Note) {
         context.delete(note)
+    }
+    
+    private func removeFolder(_ folder: Folder) {
+        context.delete(folder)
     }
 }
 

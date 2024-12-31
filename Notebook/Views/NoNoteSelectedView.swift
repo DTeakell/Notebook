@@ -14,7 +14,7 @@ struct NoNoteSelectedView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 40, height: 40)
-                .foregroundStyle(.purple)
+                .foregroundStyle(.mint)
             
             Text("No note selected")
                 .font(.headline)
