@@ -16,6 +16,7 @@ struct NoteDetailView: View {
     @Environment(\.modelContext) var context
     
     @State var note: Note
+    @State var folder: Folder?
     
     var body: some View {
         NavigationStack {
@@ -44,6 +45,7 @@ struct NoteDetailView: View {
                         dismiss()
                     }
                     // Make the save button disabled so the user doesn't make an empty note
+                    .fontWeight(.semibold)
                     .disabled(note.title.isEmpty)
                 }
             }
@@ -54,7 +56,7 @@ struct NoteDetailView: View {
             .navigationBarBackButtonHidden()
             .padding()
         }
-        .tint(.mint)
+        .tint(.purple)
     }
     
     // Function to add note
