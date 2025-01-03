@@ -2,8 +2,7 @@
 A simple note-taking app made using SwiftUI and SwiftData
 
 ### Screenshots
-<img src=“./Screenshots/Notebook-Dark-Home.png alt="App Screenshot" width="200">  <img src=“./Screenshots/Notebook-Dark-Note.png alt="App Screenshot" width="200">  <img src=“./Screenshots/Notebook-Dark-Start.png alt="App Screenshot" width="200">  <img src=“./Screenshots/Notebook-Light-Home.png alt="App Screenshot" width="200">  <img src=“./Screenshots/Notebook-Light-Note.png alt="App Screenshot" width="200">  <img src=“./Screenshots/Notebook-Light-Start.png alt="App Screenshot" width="200">
-
+<img src= "./Screenshots/Notebook-Dark-Home.png" alt= "App Screenshot" width="200"> <img src= "./Screenshots/Notebook-Light-Home.png" alt="App Screenshot" width="200"> 
 ### Features
 - **Persistent Notes** - Save and manage notes locally with SwiftData.
 - **Minimal UI** - Minimal, native iOS UI.
