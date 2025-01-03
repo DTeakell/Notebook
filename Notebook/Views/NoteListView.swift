@@ -47,7 +47,8 @@ struct NoteListView: View {
                 .sheet(isPresented: $isShowingNoteDetailView) {
                     NoteDetailView(note: Note(title: "", body: "", date: Date()))
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(.bordered)
+                .tint(Color.purple)
                 .padding()
                 
             }
