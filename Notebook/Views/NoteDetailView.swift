@@ -44,6 +44,7 @@ struct NoteDetailView: View {
                     }
                     // Make the save button disabled so the user doesn't make an empty note
                     .disabled(note.title.isEmpty)
+                    .fontWeight(.semibold)
                 }
             }
             .navigationTitle(note.title)
